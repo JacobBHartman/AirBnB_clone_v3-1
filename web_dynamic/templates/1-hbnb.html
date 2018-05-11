@@ -11,6 +11,11 @@
     <!-- FAVICON -->
 
     <link rel="shortcut icon" href="{{ url_for('static', filename='images/icon.png') }}">
+    
+    <!-- IMPORT JS AND JQUERY -->
+
+    <SCRIPT src="https://code.jquery.com/jquery-3.2.1.min.js"></SCRIPT>
+    <script src="static/scripts/1-hbnb.js"></script>
 
     <!-- **********************
 	 CSS styles
@@ -73,7 +78,7 @@
 	    <h4>&nbsp;</h4>
 	    <ul class="popover">
 	      {% for amenity in amens|sort(attribute='name') %}
-	      <LI>{{ amenity.name }}</LI>
+	      <LI><INPUT type="checkbox" data-id=":amenity_id", data-name=":amenity_name">{{ amenity.name }}</LI>
 	      {% endfor %}
 	    </ul>
 	  </div>
