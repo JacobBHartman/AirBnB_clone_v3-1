@@ -1,23 +1,23 @@
-let amen_ID = {};
-
 $(function () {
   $.get('http://0.0.0.0:5001/api/v1/status/', function (data) {
     if ('status' in data) {
-      console.log(data);
       $('header DIV#api_status').addClass('available');
     } else {
       $('header DIV#api_status').removeClass('available');
     }
   });
 
+  let amen_ID = {};
   $('.amenities .popover li input[type="checkbox"]').click(function () {
-    console.log(amen_ID);
+    // console.log(amen_ID);
     if ($(this).is(':checked')) {
       amen_ID[$(this).data('id')] = $(this).data('name');
     } else {
       delete amen_ID[$(this).data('id')];
     }
     $('.amenities h4').text(Object.values(amen_ID).join(', '));
+    // console.log('meeeeeeep');
+    // console.log(amen_ID);
   });
 
   $.ajax({
@@ -53,7 +53,7 @@ $(function () {
                 </div>
                 <div class="number_bathrooms">
                   <i class="fa fa-bath fa-3x" aria-hidden="true"></i>
-                  <br />
+                  <br />      console.log(data);
                   ${data[i].number_bathrooms} Bathroom
                 </div>
               </div>
@@ -66,4 +66,24 @@ $(function () {
     }
     $('section.places').append(placesStr);
   }
+
+  $('button').click(() => {
+    let amen = { 'amenities': amen_ID };
+    // console.log('weeeeeeeeee');
+    // console.log(amen);
+    $.ajax({
+      type: 'POST',
+      url: 'http://0.0.0.0:5001/api/v1/places_search/',
+      contentType: 'application/json',
+      data: JSON.stringify(amen),
+      success: function (data) {
+        // console.log('success');
+        // console.log(data);
+        amen_ID = {};
+        $('section.places').children().remove();
+        printPlaces(data);
+      },
+      error: 'error'
+    });
+  });
 });
